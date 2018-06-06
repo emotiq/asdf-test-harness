@@ -41,6 +41,5 @@
              :failures (harness:report-results results))))
   t)
    
-#+(or)
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (export :harness-test :asdf))
