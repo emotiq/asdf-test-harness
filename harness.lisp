@@ -24,7 +24,7 @@ execution.")
       ;; unimplemented: adapt varying test results into a standardized
       ;; structure that may be used to collect numerical statistics or
       ;; possibly decide on further actions by the condition handler
-      (declare (ignore arg-or-args))
-      t))
+      arg-or-args))
+
 
 
