@@ -20,26 +20,30 @@
 
 (defclass harness-test (system)
   ((test-framework
-    :initform :test-framework
+    :initarg :test-framework
     :reader test-framework
-    :initarg :lisp-unit
+    :initform :lisp-unit
     :documentation "A keyword specifying which test framework should
     be used to perform tests on this system.  The default is :LISP-UNIT.")
    (test-package
     :initarg :test-package
+    :reader test-package
     :documentation "The package containing the tests.")
    (test-args ;; currently unused
     :initarg :test-args
     :documentation "Additional arguments for specifying how to test this system.")))
 
 (defmethod perform ((operation test-op) (system harness-test))
-  (multiple-value-bind (all-tests-succeeded-p results)
-      (harness:run-tests (test-framework system))
+  (let ((framework (test-framework system))
+        (for-package (find-package (test-package system))))
+    (multiple-value-bind (all-tests-succeeded-p results)
+        (harness:run-tests framework for-package)
     (unless all-tests-succeeded-p
       (error 'test-suite-failures
              :failed-asdf-component system
-             :failures (harness:report-results results))))
+             :failures (harness:report-results framework results)))))
   t)
-   
+
+#+(or)
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (export :harness-test :asdf))
