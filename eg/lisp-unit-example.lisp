@@ -6,5 +6,8 @@
 (lisp-unit:define-test a-test
   (lisp-unit:assert-equal t t))
 
+(lisp-unit:define-test a-failing-test
+  (lisp-unit:assert-equal t nil))
+
 
 

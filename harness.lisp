@@ -11,12 +11,12 @@ execution.")
   ;;; For now assume we are passed a package which contains tests in ARG-OR-ARGS
   (:method ((harness-type (eql :lisp-unit)) &rest arg-or-args)
     (let ((results
-           (lisp-unit:run-tests :all (first arg-or-args))) )
+           (lisp-unit:run-tests :all (first arg-or-args))))
       (values
-       (or (lisp-unit::fail results)
-           (lisp-unit::exerr results)
-           (lisp-unit::failed-tests results)
-           (lisp-unit::error-tests results))
+       (not (or (lisp-unit::fail results)
+                (lisp-unit::exerr results)
+                (lisp-unit::failed-tests results)
+                (lisp-unit::error-tests results)))
        results))))
 
 (defgeneric report-results (harness-type &rest arg-or-args)

@@ -1,6 +1,6 @@
 (in-package :asdf)
 
-(define-condition asdf-test-system-failure (error) ;; We could probably get away with a warning…
+(define-condition asdf-test-system-failure (error) 
   ((failed-asdf-component
     :initarg :failed-asdf-component
     :reader failed-asdf-component))
@@ -38,12 +38,14 @@
         (for-package (find-package (test-package system))))
     (multiple-value-bind (all-tests-succeeded-p results)
         (harness:run-tests framework for-package)
-    (unless all-tests-succeeded-p
-      (error 'test-suite-failures
-             :failed-asdf-component system
-             :failures (harness:report-results framework results)))))
+      (unless all-tests-succeeded-p
+        (signal 'test-suite-failures
+                :failed-asdf-component system
+                :failures (harness:report-results framework results)))))
   t)
 
-#+(or)
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (export :harness-test :asdf))
+
+(eval-when (:compile-toplevel :load-toplevel)
+  (export
+   'test-suite-failures
+   :asdf))
