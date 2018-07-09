@@ -1,5 +1,6 @@
 (defsystem asdf-test-harness
   :depends-on (asdf
+               alexandria
                ;; TODO: make the test suites we support a deferred dependency?
                lisp-unit) 
   :components ((:module package

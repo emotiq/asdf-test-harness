@@ -3,6 +3,7 @@
   (:use :cl)
   (:export
    #:run-suite
+   #:run-all-suites
    
    #:run-tests
    #:report-results))

@@ -35,3 +35,20 @@ test execution.")
   (multiple-value-bind (passed results)
       (run-tests :lisp-unit suite)
     (values passed results)))
+
+(defun run-all-suites ()
+  (unless (asdf:find-system :emotiq)
+    (format *standard-output* "Could not find the EMOTIQ system to load tests.")
+    (return-from run-all-suites nil))
+  (let* ((all-tests.sexp
+          (asdf:system-relative-pathname :emotiq "../etc/all-tests.sexp"))
+         (systems (read-from-string
+                   (alexandria:read-file-into-string all-tests.sexp))))
+    (let (failed-suites)
+      (loop
+         :for system :in systems
+         :unless (run-suite system)
+         :do (push system failed-suites))
+      (values
+       (not failed-suites)
+       failed-suites))))
