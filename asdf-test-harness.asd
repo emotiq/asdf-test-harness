@@ -2,6 +2,8 @@
   :depends-on (asdf
                alexandria
                ;; TODO: make the test suites we support a deferred dependency?
+               prove
+               fiveam
                lisp-unit) 
   :components ((:module package
                         :pathname "./"
